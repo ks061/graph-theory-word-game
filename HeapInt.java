@@ -1,10 +1,11 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
 public class HeapInt extends HeapElt {
-
-    //  private Integer record;
-
     public HeapInt(int x) {
-	record = new Integer(x);
-	handle = 0;
+        this.record = new Integer(x);
+        this.handle = 0;
     }
-
 }
