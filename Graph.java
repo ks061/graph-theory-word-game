@@ -11,32 +11,23 @@ public class Graph {
     int numVertices;
     Vertex[] adjListArr;
 
-    public Graph(int numVertex) {
+    public void setAttributes(int numVertex) {
         this.numVertices = numVertex;
         this.adjListArr = new Vertex[numVertex];
     }
 
-    public void fillVertices(BufferedReader br) throws IOException {
-	System.out.println("array size: " + this.adjListArr.length);
-        for(int i = 0; i < this.numVertices; ++i) {
-            String line = br.readLine();
-            String words[] = line.split(" ");
-            for(int j = 0; j < words.length; j++){
-                System.out.println("i : " + i);
-		this.adjListArr[i] = new Vertex(words[j], i);
-		i++;
-            }
-        }
 
+    public void fillVertex(String word, int index){
+        this.adjListArr[index] = new Vertex(word, index);
     }
 
     public void generateEdges() {
         for(int i = 0; i < this.adjListArr.length; ++i) {
-            for(int j = 0; j < i; ++j) {
+            for(int j = i; j < this.adjListArr.length; ++j) {
                 String word1 = this.adjListArr[i].getData();
                 String word2 = this.adjListArr[j].getData();
-                int numOff = 0;
 
+                int numOff = 0;
                 for(int ci = 0; ci < 5; ++ci) {
                     if (word1.charAt(ci) != word2.charAt(ci)) {
                         ++numOff;
@@ -44,8 +35,10 @@ public class Graph {
                 }
 
                 if (numOff == 1) {
+                    //System.out.println("Edge(1) between " + this.adjListArr[i].getData() + ", and " + this.adjListArr[j].getData());
                     this.addEdge(this.adjListArr[i], this.adjListArr[j], 1);
                 } else if (numOff == 2) {
+                    //System.out.println("Edge(2) between " + this.adjListArr[i].getData() + ", and " + this.adjListArr[j].getData());
                     this.addEdge(this.adjListArr[i], this.adjListArr[j], 5);
                 }
             }
@@ -65,13 +58,14 @@ public class Graph {
     }
 
     public Vertex getVertex(String word) {
+        word = word.toUpperCase();
         int low = 0;
-        int high = this.adjListArr.length;
+        int high = this.adjListArr.length - 1;
         int count = 0;
-
         while(low <= high && count < 10000) {
             ++count;
             int mid = (low + high) / 2;
+            //System.out.println("low = " + low + ", mid = " + mid + ", high = " + high + ", midword = " + this.adjListArr[mid].getData());
             if (this.adjListArr[mid].getData().compareTo(word) < 0) {
                 low = mid + 1;
             } else if (this.adjListArr[mid].getData().compareTo(word) > 0) {

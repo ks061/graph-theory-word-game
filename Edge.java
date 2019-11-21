@@ -17,4 +17,8 @@ public class Edge {
     public Vertex getDestination() {
         return this.destination;
     }
+
+    public int getWeight(){
+        return this.weight;
+    }
 }

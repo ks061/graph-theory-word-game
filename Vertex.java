@@ -22,7 +22,7 @@ public class Vertex extends HeapElt {
 
         while(var1.hasNext()) {
             Edge curr = (Edge)var1.next();
-            System.out.print(curr.getDestination().getData() + " ");
+            System.out.print(curr.getDestination().getData() + "(" + curr.getWeight() + ") ");
         }
 
     }
