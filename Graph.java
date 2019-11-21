@@ -23,7 +23,7 @@ public class Graph {
 
     public void generateEdges() {
         for(int i = 0; i < this.adjListArr.length; ++i) {
-            for(int j = i; j < this.adjListArr.length; ++j) {
+            for(int j = i+1; j < this.adjListArr.length; ++j) {
                 String word1 = this.adjListArr[i].getData();
                 String word2 = this.adjListArr[j].getData();
 
@@ -45,9 +45,10 @@ public class Graph {
     }
 
     public void addEdge(Vertex v1, Vertex v2, int weight) {
-        Edge edge = new Edge(v1, v2, weight);
-        this.adjListArr[v1.getIndex()].addEdge(edge);
-        this.adjListArr[v2.getIndex()].addEdge(edge);
+        Edge edge1 = new Edge(v1, v2, weight);
+        Edge edge2 = new Edge(v2, v1, weight);
+        this.adjListArr[v1.getIndex()].addEdge(edge1);
+        this.adjListArr[v2.getIndex()].addEdge(edge2);
     }
 
     public void displayNeighbors(String word) {
@@ -73,7 +74,8 @@ public class Graph {
             }
         }
 
-        System.out.println("ERROR: Failed to find Vertex in adjacency list, returning -1");
+        System.out.println("ERROR: Failed to find Vertex in adjacency list, exiting");
+        System.exit(-1);
         return null;
     }
 }

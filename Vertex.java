@@ -19,9 +19,15 @@ public class Vertex extends HeapElt {
 
     public void printNeighbors() {
         Iterator var1 = this.adjList.iterator();
+        int counter = 0;
         while(var1.hasNext()) {
+            counter++;
             Edge curr = (Edge)var1.next();
             System.out.print(curr.getDestination().getData() + "(" + curr.getWeight() + ") ");
+            if(counter == 5){
+                System.out.println();
+                counter = 0;
+            }
         }
 
     }
