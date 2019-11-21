@@ -35,10 +35,8 @@ public class Graph {
                 }
 
                 if (numOff == 1) {
-                    //System.out.println("Edge(1) between " + this.adjListArr[i].getData() + ", and " + this.adjListArr[j].getData());
                     this.addEdge(this.adjListArr[i], this.adjListArr[j], 1);
                 } else if (numOff == 2) {
-                    //System.out.println("Edge(2) between " + this.adjListArr[i].getData() + ", and " + this.adjListArr[j].getData());
                     this.addEdge(this.adjListArr[i], this.adjListArr[j], 5);
                 }
             }
@@ -65,7 +63,7 @@ public class Graph {
         while(low <= high && count < 10000) {
             ++count;
             int mid = (low + high) / 2;
-            //System.out.println("low = " + low + ", mid = " + mid + ", high = " + high + ", midword = " + this.adjListArr[mid].getData());
+
             if (this.adjListArr[mid].getData().compareTo(word) < 0) {
                 low = mid + 1;
             } else if (this.adjListArr[mid].getData().compareTo(word) > 0) {

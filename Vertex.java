@@ -19,7 +19,6 @@ public class Vertex extends HeapElt {
 
     public void printNeighbors() {
         Iterator var1 = this.adjList.iterator();
-
         while(var1.hasNext()) {
             Edge curr = (Edge)var1.next();
             System.out.print(curr.getDestination().getData() + "(" + curr.getWeight() + ") ");
