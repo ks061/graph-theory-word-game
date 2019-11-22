@@ -5,7 +5,7 @@
 
 public class HeapInt extends HeapElt {
     public HeapInt(int x) {
-        this.record = new Integer(x);
+        this.record = x;
         this.handle = 0;
     }
 }

@@ -51,7 +51,7 @@ public class Graph {
 
     public void displayNeighbors(String word) {
         Vertex v = this.getVertex(word);
-        v.printNeighbors();
+        if (v != null) v.printNeighbors();
     }
 
     public Vertex getVertex(String word) {
@@ -74,7 +74,6 @@ public class Graph {
         }
 
         System.out.println("ERROR: Failed to find word.");
-	System.exit(1);
         return null;
     }
 }

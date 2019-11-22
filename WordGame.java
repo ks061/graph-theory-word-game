@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main {
+public class WordGame {
     private static ArrayList<String> readWords(String filename) throws IOException {
 	String line;	
 	String wordsInLine[];
@@ -34,9 +34,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         System.out.println("Welcome to the Wordgame!");
-        System.out.print("Filename: ");
-        Scanner scanIn = new Scanner(System.in);
-        String filename = scanIn.nextLine();
+	String filename = args[0];
 
         File file = new File(filename);
 	if (!file.exists()) {
@@ -47,15 +45,19 @@ public class Main {
 	ArrayList<String> words = readWords(filename);
         Graph graph = new Graph(words);
 
+	Scanner scanIn = new Scanner(System.in);
         String doReplay = "yes";
-        while(doReplay.equalsIgnoreCase("yes") || doReplay.equalsIgnoreCase("y")){
-            System.out.print("Enter a five letter word: ");
-            String word = scanIn.nextLine();
+	String word;
+        while (doReplay.equalsIgnoreCase("yes") || doReplay.equalsIgnoreCase("y")) {
+            System.out.println("Enter a five letter word: ");
+            word = scanIn.nextLine().toUpperCase();
             System.out.println("The neighbors of " + word + " are: ");
             graph.displayNeighbors(word);
-            System.out.print("\nEnter another word? (yes / y or n / no): ");
-            doReplay = scanIn.nextLine();
-        }
+	    do  {
+            	System.out.println("\nEnter another word? (yes / y or n / no): ");
+            	doReplay = scanIn.nextLine();
+            } while (!doReplay.equalsIgnoreCase("yes") && !doReplay.equalsIgnoreCase("y") && !doReplay.equalsIgnoreCase("no") && !doReplay.equalsIgnoreCase("n"));
+	}
 
 
     }

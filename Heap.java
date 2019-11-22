@@ -75,6 +75,7 @@ public class Heap {
 
       Running time = O(lg(n))
     */
+    @SuppressWarnings("unchecked")
     public void heapifyUp(int pos) {
         // heapify up only if not looking at minimum element 
         // and if current node is less than the parent node
@@ -92,6 +93,7 @@ public class Heap {
 
       Running time = O(lg(n))
     */
+    @SuppressWarnings("unchecked")
     public void heapifyDown(int pos) {
         int smallest_pos = pos;
         // set smallest_pos to the position of the left child if it is the smallest node examined thus far
