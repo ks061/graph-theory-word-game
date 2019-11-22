@@ -33,7 +33,7 @@ public class WordGame {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println("Welcome to the Wordgame!");
+	System.out.println("Welcome to WordGame!");
 	String filename = args[0];
 
         File file = new File(filename);
@@ -58,7 +58,6 @@ public class WordGame {
             	doReplay = scanIn.nextLine();
             } while (!doReplay.equalsIgnoreCase("yes") && !doReplay.equalsIgnoreCase("y") && !doReplay.equalsIgnoreCase("no") && !doReplay.equalsIgnoreCase("n"));
 	}
-
 
     }
 }

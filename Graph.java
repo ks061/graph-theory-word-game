@@ -44,9 +44,10 @@ public class Graph {
     }
 
     public void addEdge(Vertex v1, Vertex v2, int weight) {
-        Edge edge = new Edge(v1, v2, weight);
-        this.vertices[v1.getIndex()].addEdge(edge);
-        this.vertices[v2.getIndex()].addEdge(edge);
+        Edge edge1 = new Edge(v1, v2, weight);
+	Edge edge2 = new Edge(v2, v1, weight);
+        this.vertices[v1.getIndex()].addEdge(edge1);
+        this.vertices[v2.getIndex()].addEdge(edge2);
     }
 
     public void displayNeighbors(String word) {

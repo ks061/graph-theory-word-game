@@ -7,32 +7,18 @@ import java.util.Iterator;
 import java.util.HashSet;
 
 public class Edge {
-    private HashSet<Vertex> vertexEndpoints;
+    private Vertex source;
+    private Vertex adjacentVertex;
     private int weight;
 
-    public Edge(Vertex v1, Vertex v2, int w) {
-        vertexEndpoints = new HashSet<Vertex>();
-	vertexEndpoints.add(v1);
-	vertexEndpoints.add(v2);
-        this.weight = w;
+    public Edge(Vertex source, Vertex adjacentVertex, int weight) {
+        this.source = source;
+	this.adjacentVertex = adjacentVertex;
+	this.weight = weight;
     }
 
-    public HashSet<Vertex> getVertexEndpoints() {
-        return this.getVertexEndpoints();
-    }
-
-    public Vertex getOtherVertex(Vertex v) {
-	Iterator iterator = this.vertexEndpoints.iterator();
-	
-	Vertex currentVertex;
-	while(iterator.hasNext()) {
-	    currentVertex = (Vertex)iterator.next();
-	    if (currentVertex != v) {
-		return currentVertex;
-	    }
-	}
-	
-	return null;
+    public Vertex getAdjacentVertex() {
+	return this.adjacentVertex;
     }
 
     public int getWeight() {

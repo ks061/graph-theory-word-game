@@ -29,7 +29,7 @@ public class Vertex extends HeapElt {
 		counter = 0;
 	    }
 	    currentEdge = (Edge)iterator.next();
-            System.out.print(currentEdge.getOtherVertex(this).getWord() + " (" + currentEdge.getWeight() + ")  ");
+            System.out.print(currentEdge.getAdjacentVertex().getWord() + " (" + currentEdge.getWeight() + ")  ");
             counter++;
 	}
 
