@@ -8,10 +8,28 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public Main() {
+    private static ArrayList<String> readWords(String filename) throws IOException {
+	String line;	
+	String wordsInLine[];
+	ArrayList<String> words = new ArrayList<String>();
+	int wordIndex = 0;
+	
+	BufferedReader br = new BufferedReader(new FileReader(filename));
+	while ((line = br.readLine()) != null) {
+	    wordsInLine = line.split(" ");
+	    for(int i = 0; i < wordsInLine.length; i++) {
+		if (wordsInLine[i].equals("")) continue;
+		words.add(wordsInLine[i]);
+	    }
+	}
+	br.close();
+
+	return words;
     }
 
     public static void main(String[] args) throws IOException {
@@ -19,38 +37,24 @@ public class Main {
         System.out.print("Filename: ");
         Scanner scanIn = new Scanner(System.in);
         String filename = scanIn.nextLine();
-        int numLines = -1;
-	int numWords = 0;
-	
-	FileReader fr = new FileReader(filename);
-        try {
-            BufferedReader br1 = new BufferedReader(fr);
 
-		
-            for(numLines = 0; br1.readLine() != null; ++numLines) {
-	    	numWords += br1.readLine().split(" ").length;            	
-	    }
+        File file = new File(filename);
+	if (!file.exists()) {
+		System.out.println("Error: File " + filename + " could not be found.");
+		System.exit(1);
+	}
 
-            br1.close();
-        } catch (FileNotFoundException var) {
-            System.out.println("Error: File " + filename + " could not be found.");
-            System.exit(1);
-        }
+	ArrayList<String> words = readWords(filename);
+        Graph graph = new Graph(words);
 
-        BufferedReader br1 = new BufferedReader(new FileReader(filename));
-        Graph graph = new Graph(numWords);
-	System.out.println("numWords: " + numWords);
-        graph.fillVertices(br1);
-        graph.generateEdges();
-
-        String replay = "YES";
-        while(replay == "YES" || replay == "Y"){
-            replay = scanIn.nextLine().toUpperCase();
-            System.out.println("Enter a five letter word: ");
+        String doReplay = "yes";
+        while(doReplay.equalsIgnoreCase("yes") || doReplay.equalsIgnoreCase("y")){
+            System.out.print("Enter a five letter word: ");
             String word = scanIn.nextLine();
-            System.out.println("The neighbors of " + word + "are: ");
+            System.out.println("The neighbors of " + word + " are: ");
             graph.displayNeighbors(word);
-            System.out.println("\nEnter another word? (yes / y or n / no");
+            System.out.print("\nEnter another word? (yes / y or n / no): ");
+            doReplay = scanIn.nextLine();
         }
 
 

@@ -5,58 +5,48 @@
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Graph {
     final int STRLEN = 5;
-    int numVertices;
-    Vertex[] adjListArr;
+    private Vertex[] vertices;
 
-    public Graph(int numVertex) {
-        this.numVertices = numVertex;
-        this.adjListArr = new Vertex[numVertex];
+    public Graph(ArrayList<String> words) {
+        this.vertices = new Vertex[words.size()];
+    	this.createVertices(words);
+	this.generateEdges();
     }
 
-    public void fillVertices(BufferedReader br) throws IOException {
-	System.out.println("array size: " + this.adjListArr.length);
-        for(int i = 0; i < this.numVertices; ++i) {
-            String line = br.readLine();
-            String words[] = line.split(" ");
-            for(int j = 0; j < words.length; j++){
-                System.out.println("i : " + i);
-		this.adjListArr[i] = new Vertex(words[j], i);
-		i++;
-            }
-        }
-
+    private void createVertices(ArrayList<String> words) {
+	for(int i = 0; i < words.size(); i++) {
+	    this.vertices[i] = new Vertex(words.get(i), i);
+	}
     }
 
     public void generateEdges() {
-        for(int i = 0; i < this.adjListArr.length; ++i) {
-            for(int j = 0; j < i; ++j) {
-                String word1 = this.adjListArr[i].getData();
-                String word2 = this.adjListArr[j].getData();
-                int numOff = 0;
-
-                for(int ci = 0; ci < 5; ++ci) {
-                    if (word1.charAt(ci) != word2.charAt(ci)) {
-                        ++numOff;
-                    }
+        for(int i = 0; i < this.vertices.length; i++) {
+            for(int j = i+1; j < this.vertices.length; j++) {
+                String word1 = this.vertices[i].getWord();
+                String word2 = this.vertices[j].getWord();
+                
+		int numCharactersDifferent = 0;
+                for(int charIndex = 0; charIndex < STRLEN; charIndex++) {
+                    if (word1.charAt(charIndex) != word2.charAt(charIndex))
+                        numCharactersDifferent++;
                 }
 
-                if (numOff == 1) {
-                    this.addEdge(this.adjListArr[i], this.adjListArr[j], 1);
-                } else if (numOff == 2) {
-                    this.addEdge(this.adjListArr[i], this.adjListArr[j], 5);
-                }
+                if (numCharactersDifferent == 1)
+                    this.addEdge(this.vertices[i], this.vertices[j], 1);
+                else if (numCharactersDifferent == 2)
+                    this.addEdge(this.vertices[i], this.vertices[j], 5);
             }
         }
-
     }
 
     public void addEdge(Vertex v1, Vertex v2, int weight) {
         Edge edge = new Edge(v1, v2, weight);
-        this.adjListArr[v1.getIndex()].addEdge(edge);
-        this.adjListArr[v2.getIndex()].addEdge(edge);
+        this.vertices[v1.getIndex()].addEdge(edge);
+        this.vertices[v2.getIndex()].addEdge(edge);
     }
 
     public void displayNeighbors(String word) {
@@ -65,23 +55,26 @@ public class Graph {
     }
 
     public Vertex getVertex(String word) {
-        int low = 0;
-        int high = this.adjListArr.length;
-        int count = 0;
+	word = word.toUpperCase();
+        int lowIndex = 0;
+        int highIndex = this.vertices.length - 1;
+	int midIndex = (lowIndex + highIndex) / 2;
+	int verticesSearched = 0;
 
-        while(low <= high && count < 10000) {
-            ++count;
-            int mid = (low + high) / 2;
-            if (this.adjListArr[mid].getData().compareTo(word) < 0) {
-                low = mid + 1;
-            } else if (this.adjListArr[mid].getData().compareTo(word) > 0) {
-                high = mid - 1;
-            } else if (this.adjListArr[mid].getData().compareTo(word) == 0) {
-                return this.adjListArr[mid];
-            }
+        while(lowIndex <= highIndex && verticesSearched < this.vertices.length) {
+	    verticesSearched++;
+            if (this.vertices[midIndex].getWord().compareTo(word) < 0)
+                lowIndex = midIndex + 1;
+            else if (this.vertices[midIndex].getWord().compareTo(word) > 0)
+                highIndex = midIndex - 1;
+            else if (this.vertices[midIndex].getWord().compareTo(word) == 0)
+                return this.vertices[midIndex];
+
+            midIndex = (lowIndex + highIndex) / 2;
         }
 
-        System.out.println("ERROR: Failed to find Vertex in adjacency list, returning -1");
+        System.out.println("ERROR: Failed to find word.");
+	System.exit(1);
         return null;
     }
 }

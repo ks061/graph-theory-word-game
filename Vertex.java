@@ -7,23 +7,31 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Vertex extends HeapElt {
-    private String data;
+    private String word;
     private int index;
     private LinkedList<Edge> adjList;
+    private static final int wordsPerLineInOutput = 6;	
 
-    public Vertex(String d, int index) {
-        this.index = index;
-        this.data = d.toUpperCase();
-        this.adjList = new LinkedList();
+    public Vertex(String word, int index) {
+        this.word = word.toUpperCase();
+	this.index = index;
+        this.adjList = new LinkedList<Edge>();
     }
 
     public void printNeighbors() {
-        Iterator var1 = this.adjList.iterator();
-
-        while(var1.hasNext()) {
-            Edge curr = (Edge)var1.next();
-            System.out.print(curr.getDestination().getData() + " ");
-        }
+        Iterator iterator = this.adjList.iterator();
+	
+	int counter = 0;
+	Edge currentEdge;
+        while(iterator.hasNext()) {
+	    if (counter == wordsPerLineInOutput) {
+		System.out.println();
+		counter = 0;
+	    }
+	    currentEdge = (Edge)iterator.next();
+            System.out.print(currentEdge.getOtherVertex(this).getWord() + " (" + currentEdge.getWeight() + ")  ");
+            counter++;
+	}
 
     }
 
@@ -31,8 +39,8 @@ public class Vertex extends HeapElt {
         this.adjList.add(v);
     }
 
-    public String getData() {
-        return this.data;
+    public String getWord() {
+        return this.word;
     }
 
     public int getIndex() {
