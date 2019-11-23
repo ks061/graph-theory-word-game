@@ -33,7 +33,7 @@ public class Graph {
      * Initializes each vertex to hold a word and its respective
      * index in the array of vertices held by this graph
      * 
-     * @param list of words
+     * @param words list of words
      */
     private void createVertices(ArrayList<String> words) {
 	for(int i = 0; i < words.size(); i++) {
