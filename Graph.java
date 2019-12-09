@@ -6,6 +6,7 @@
  */
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -106,14 +107,29 @@ public class Graph {
 
     public void printVertPath(Vertex v){
         Vertex curr = v;
-        System.out.print(curr.getWord() + " ");
+        int totalCost = 0;
+        ArrayList<Vertex> vertPath = new ArrayList<>();
 
         while(curr.getPredecessor() != null){
-            System.out.print(curr.getWord() + " ");
+            Edge e = curr.findEdge(curr.getPredecessor());
+            curr.setPathWeight(e.getWeight());
+            vertPath.add(curr);
+            // System.out.print(curr.getWord() + "(" + e.getWeight() + ") ");
+            totalCost += e.getWeight();
             curr = curr.getPredecessor();
         }
 
-        System.out.print(curr.getWord());
+        // handling first element (no cost)
+        curr.setPathWeight(0);
+        vertPath.add(curr);
+
+        Collections.reverse(vertPath);
+
+        for(int i = 0; i < vertPath.size(); i++){
+            System.out.print(vertPath.get(i).getWord() + "(" + vertPath.get(i).getPathWeight() + ") ");
+        }
+
+        System.out.println("\nTotal cost: " + totalCost);
 
     }
 
@@ -154,6 +170,7 @@ public class Graph {
         for(int i = 0; i < this.vertices.length; i++){
             this.vertices[i].setRecord(Integer.MAX_VALUE);
             this.vertices[i].setPredecessor(null);
+            this.vertices[i].setHandle(0);
         }
 
         vStart.setRecord(0);
@@ -181,8 +198,12 @@ public class Graph {
                 if (v.getRecord().compareTo(comp) > 0 ){
                     v.setRecord((int) u.getRecord() + currentEdge.getWeight());
                     v.setPredecessor(u);
-                    v.setPathWeight(currentEdge.getWeight());
-                    priorityQueue.insert(v);
+
+                    if(v.getHandle() == 0) {
+                        priorityQueue.insert(v);
+                    } else {
+                        priorityQueue.heapifyUp(v.getHandle());
+                    }
                 }
             }
         }

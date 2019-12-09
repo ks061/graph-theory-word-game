@@ -34,6 +34,20 @@ public class Vertex extends HeapElt {
         this.record = Integer.MAX_VALUE;
     }
 
+    public Edge findEdge(Vertex v){
+
+        Iterator iterator = this.adjList.iterator();
+        Edge currEdge;
+        while(iterator.hasNext()) {
+            currEdge = (Edge) iterator.next();
+            if(currEdge.getAdjacentVertex().getWord().equals(v.getWord())){
+                return currEdge;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Prints all of the neighbors adjacent to this vertex.
      */
