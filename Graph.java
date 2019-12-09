@@ -4,9 +4,9 @@
  * @author Kartikeya Sharma
  * @author Nick Passantino
  */
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Graph represents an undirected graph
@@ -26,7 +26,7 @@ public class Graph {
     public Graph(ArrayList<String> words) {
         this.vertices = new Vertex[words.size()];
     	this.createVertices(words);
-	this.generateEdges();
+	    this.generateEdges();
     }
 
     /**
@@ -36,9 +36,9 @@ public class Graph {
      * @param words list of words
      */
     private void createVertices(ArrayList<String> words) {
-	for(int i = 0; i < words.size(); i++) {
-	    this.vertices[i] = new Vertex(words.get(i), i);
-	}
+        for(int i = 0; i < words.size(); i++) {
+            this.vertices[i] = new Vertex(words.get(i), i);
+        }
     }
 
     /**
@@ -89,7 +89,32 @@ public class Graph {
      */
     public void displayNeighbors(String word) {
         Vertex v = this.getVertex(word);
-        if (v != null) v.printNeighbors();
+        if (v != null) {
+            v.printNeighbors();
+        }
+    }
+
+    public boolean checkValidity(String word1, String word2) {
+        Vertex v1 = this.getVertex(word1);
+        Vertex v2 = this.getVertex(word2);
+        if (v1 != null && v2 != null){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void printVertPath(Vertex v){
+        Vertex curr = v;
+        System.out.print(curr.getWord() + " ");
+
+        while(curr.getPredecessor() != null){
+            System.out.print(curr.getWord() + " ");
+            curr = curr.getPredecessor();
+        }
+
+        System.out.print(curr.getWord());
+
     }
 
     /**
@@ -101,11 +126,11 @@ public class Graph {
      * @return Vertex object containing the inputted word
      */
     public Vertex getVertex(String word) {
-	word = word.toUpperCase();
+	    word = word.toUpperCase();
         int lowIndex = 0;
         int highIndex = this.vertices.length - 1;
-	int midIndex = (lowIndex + highIndex) / 2;
-	int verticesSearched = 0;
+        int midIndex = (lowIndex + highIndex) / 2;
+        int verticesSearched = 0;
 
         while(lowIndex <= highIndex && verticesSearched < this.vertices.length) {
 	    verticesSearched++;
@@ -120,6 +145,47 @@ public class Graph {
         }
 
         System.out.println("ERROR: Failed to find word.");
+        return null;
+    }
+
+    public Vertex dijkstras(Vertex vStart, Vertex vEnd){
+        Heap priorityQueue = new Heap();
+
+        for(int i = 0; i < this.vertices.length; i++){
+            this.vertices[i].setRecord(Integer.MAX_VALUE);
+            this.vertices[i].setPredecessor(null);
+        }
+
+        vStart.setRecord(0);
+        vStart.setPathWeight(0);
+
+        priorityQueue.insert(vStart);
+
+        while(priorityQueue.getHeapSize() > 0){
+            Vertex u = (Vertex) priorityQueue.removeMin();
+            if(u.getWord().equals(vEnd.getWord())){
+                return u;
+            }
+
+            // iterate over all adjacent vertexes via the edges of the current vertex
+            Iterator<Edge> iterator = u.getAdjList().iterator();
+            Edge currentEdge;
+
+            while(iterator.hasNext()) {
+                currentEdge = (Edge)iterator.next();
+                Vertex v = currentEdge.getAdjacentVertex();
+
+                // see if the vertex belongs in the minimum spanning tree
+
+                int comp = (int) u.getRecord() + currentEdge.getWeight();
+                if (v.getRecord().compareTo(comp) > 0 ){
+                    v.setRecord((int) u.getRecord() + currentEdge.getWeight());
+                    v.setPredecessor(u);
+                    v.setPathWeight(currentEdge.getWeight());
+                    priorityQueue.insert(v);
+                }
+            }
+        }
         return null;
     }
 }

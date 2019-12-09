@@ -44,6 +44,20 @@ public class WordGame {
 	return words;
     }
 
+	public static void printPath(ArrayList<Vertex> vlist){
+		int wordsPerLine = 5;
+		int counter = 0;
+		for(int i = 0; i < vlist.size(); i++){
+			if (counter == wordsPerLine) {
+				System.out.println();
+				counter = 0;
+			} else {
+				counter += 1;
+			}
+			System.out.print(vlist.get(i).getWord() + " (" + vlist.get(i).getPathWeight() + ")  ");
+		}
+	}
+
     /**
      * Runs the WordGame
      * The game takes in a filename from its first command line argument.
@@ -63,27 +77,35 @@ public class WordGame {
 	System.out.println("Welcome to WordGame!");
 	String filename = args[0];
 
-        File file = new File(filename);
+	File file = new File(filename);
 	if (!file.exists()) {
 		System.out.println("Error: File " + filename + " could not be found.");
 		System.exit(1);
 	}
 
 	ArrayList<String> words = readWords(filename);
-        Graph graph = new Graph(words);
+	Graph graph = new Graph(words);
 
 	Scanner scanIn = new Scanner(System.in);
-        String doReplay = "yes";
-	String word;
-        while (doReplay.equalsIgnoreCase("yes") || doReplay.equalsIgnoreCase("y")) {
-            System.out.println("Enter a five letter word: ");
-            word = scanIn.nextLine().toUpperCase();
-            System.out.println("The neighbors of " + word + " are: ");
-            graph.displayNeighbors(word);
-	    do  {
-            	System.out.println("\nEnter another word? (yes / y or n / no): ");
-            	doReplay = scanIn.nextLine();
-            } while (!doReplay.equalsIgnoreCase("yes") && !doReplay.equalsIgnoreCase("y") && !doReplay.equalsIgnoreCase("no") && !doReplay.equalsIgnoreCase("n"));
+	String doReplay = "yes";
+	String word1, word2;
+
+	while (doReplay.equalsIgnoreCase("yes") || doReplay.equalsIgnoreCase("y")) {
+		System.out.println("Enter two five letter words (press enter after each): ");
+		word1 = scanIn.nextLine().toUpperCase();
+		word2 = scanIn.nextLine().toUpperCase();
+		// System.out.println("The neighbors of " + word + " are: ");
+
+		if(graph.checkValidity(word1, word2)){
+			Vertex vStart = graph.getVertex(word1);
+			Vertex vEnd = graph.getVertex(word2);
+
+			graph.printVertPath(graph.dijkstras(vStart, vEnd));
+		}
+		do {
+			System.out.println("\nEnter another word? (yes / y or n / no): ");
+			doReplay = scanIn.nextLine();
+		} while (!doReplay.equalsIgnoreCase("yes") && !doReplay.equalsIgnoreCase("y") && !doReplay.equalsIgnoreCase("no") && !doReplay.equalsIgnoreCase("n"));
 	}
 
     }

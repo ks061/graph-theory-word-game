@@ -15,8 +15,10 @@ public class Vertex extends HeapElt {
     private String word;
     private int index;
     private LinkedList<Edge> adjList;
-    private static final int wordsPerLineInOutput = 6;	
+    private static final int wordsPerLineInOutput = 6;
+    private Vertex predecessor;
 
+    private int pathWeight;
     /**
      * Constructor
      *
@@ -27,8 +29,9 @@ public class Vertex extends HeapElt {
      */
     public Vertex(String word, int index) {
         this.word = word.toUpperCase();
-	this.index = index;
+	    this.index = index;
         this.adjList = new LinkedList<Edge>();
+        this.record = Integer.MAX_VALUE;
     }
 
     /**
@@ -36,19 +39,18 @@ public class Vertex extends HeapElt {
      */
     public void printNeighbors() {
         Iterator iterator = this.adjList.iterator();
-	
-	int counter = 0;
-	Edge currentEdge;
+
+        int counter = 0;
+        Edge currentEdge;
         while(iterator.hasNext()) {
-	    if (counter == wordsPerLineInOutput) {
-		System.out.println();
-		counter = 0;
-	    }
-	    currentEdge = (Edge)iterator.next();
+            if (counter == wordsPerLineInOutput) {
+                System.out.println();
+                counter = 0;
+            }
+            currentEdge = (Edge)iterator.next();
             System.out.print(currentEdge.getAdjacentVertex().getWord() + " (" + currentEdge.getWeight() + ")  ");
             counter++;
-	}
-
+	    }
     }
 
     /**
@@ -80,4 +82,25 @@ public class Vertex extends HeapElt {
     public int getIndex() {
         return this.index;
     }
+
+    public void setPredecessor(Vertex p){
+        this.predecessor = p;
+    }
+
+    public LinkedList<Edge> getAdjList(){
+        return this.adjList;
+    }
+
+    public int getPathWeight(){
+        return this.pathWeight;
+    }
+
+    public void setPathWeight(int w) {
+        this.pathWeight = w;
+    }
+
+    public Vertex getPredecessor(){
+        return this.predecessor;
+    }
+
 }
