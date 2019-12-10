@@ -94,42 +94,53 @@ public class Graph {
         }
     }
 
+    
     public boolean checkValidity(String word1, String word2) {
         Vertex v1 = this.getVertex(word1);
         Vertex v2 = this.getVertex(word2);
-        if (v1 != null && v2 != null){
-            return true;
-        } else {
-            return false;
+        
+        if (v1 == null && v2 == null) {
+        	System.out.println("\nSorry, neither " + word1 + " nor " + word2 + " is not in the list.");
+        } else if (v1 == null && v2 != null) {
+        	System.out.println("\nSorry, " + word1 + " is not in the list.");
+        } else if (v1 != null && v2 == null) {
+        	System.out.println("\nSorry, " + word2 + " is not in the list.");
         }
+        else {
+            return true;
+        } 
+        
+        return false;
     }
 
-    public void printVertPath(Vertex v){
-        Vertex curr = v;
-        int totalCost = 0;
-        ArrayList<Vertex> vertPath = new ArrayList<>();
 
-        while(curr.getPredecessor() != null){
-            Edge e = curr.findEdge(curr.getPredecessor());
-            curr.setPathWeight(e.getWeight());
-            vertPath.add(curr);
-            // System.out.print(curr.getWord() + "(" + e.getWeight() + ") ");
+    public void printVertPath(Vertex v, String word1, String word2){
+    	ArrayList<Vertex> vertexPath = new ArrayList<>();
+        int totalCost = 0;
+        
+        Vertex currentVertex = v;
+        while (currentVertex.getPredecessor() != null) {
+            Edge e = currentVertex.findEdge(currentVertex.getPredecessor());
+            currentVertex.setPathWeight(e.getWeight());
+            vertexPath.add(currentVertex);
             totalCost += e.getWeight();
-            curr = curr.getPredecessor();
+            currentVertex = currentVertex.getPredecessor();
         }
 
         // handling first element (no cost)
-        curr.setPathWeight(0);
-        vertPath.add(curr);
+        currentVertex.setPathWeight(0);
+        vertexPath.add(currentVertex);
 
-        Collections.reverse(vertPath);
+        Collections.reverse(vertexPath);
+        
+        System.out.println("\nThe best score for " + word1 + " to " + word2 + " is " + totalCost + " points.");
 
-        for(int i = 0; i < vertPath.size(); i++){
-            System.out.print(vertPath.get(i).getWord() + "(" + vertPath.get(i).getPathWeight() + ") ");
+        for (int i = 0; i < vertexPath.size(); i++) {
+        	if (i%6 == 0) System.out.print("\n	");
+            System.out.print(vertexPath.get(i).getWord() + " (" + vertexPath.get(i).getPathWeight() + ")   ");
         }
-
-        System.out.println("\nTotal cost: " + totalCost);
-
+        System.out.println();
+        System.out.println();
     }
 
     /**
@@ -159,7 +170,6 @@ public class Graph {
             midIndex = (lowIndex + highIndex) / 2;
         }
 
-        System.out.println("ERROR: Failed to find word.");
         return null;
     }
 

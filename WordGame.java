@@ -70,12 +70,17 @@ public class WordGame {
      * @exception IOException if issues with reading in dictionary words from file with inputted filename
      */
     public static void main(String[] args) throws IOException {
-    	System.out.println("Welcome to WordGame!");
+    	System.out.println("\nWelcome to WordGame!\n");
+    	
+    	if (args.length != 1) {
+    		System.out.println("\nUsage: java WordGame <dictionary filename>");
+    		System.exit(1);
+    	}
+    	
     	String filename = args[0];
-
     	File file = new File(filename);
     	if (!file.exists()) {
-    		System.out.println("Error: File " + filename + " could not be found.");
+    		System.out.println("\nError: File " + filename + " could not be found.");
     		System.exit(1);
     	}
 
@@ -87,22 +92,25 @@ public class WordGame {
     	String word1, word2;
 
     	while (doReplay.equalsIgnoreCase("yes") || doReplay.equalsIgnoreCase("y")) {
-    		System.out.println("Enter two five letter words (press enter after each): ");
+    		System.out.print("Enter the first five-letter word: ");
     		word1 = scanIn.nextLine().toUpperCase();
+    		System.out.println();
+    		System.out.print("Enter the second five-letter word: ");
     		word2 = scanIn.nextLine().toUpperCase();
-    		// System.out.println("The neighbors of " + word + " are: ");
 
     		if (graph.checkValidity(word1, word2)){
     			Vertex vStart = graph.getVertex(word1);
     			Vertex vEnd = graph.getVertex(word2);
 
-    			graph.printVertPath(graph.dijkstras(vStart, vEnd));
+    			graph.printVertPath(graph.dijkstras(vStart, vEnd), word1, word2);
     		}
     		
-    		do {
-    			System.out.println("\nEnter another word? (yes / y or n / no): ");
+    		System.out.print("Do you want to try another word? Enter yes or no: ");
+    		doReplay = scanIn.nextLine();
+    		while (!doReplay.equalsIgnoreCase("yes") && !doReplay.equalsIgnoreCase("y") && !doReplay.equalsIgnoreCase("no") && !doReplay.equalsIgnoreCase("n")) {
+    			System.out.print("Please enter yes or no: ");
     			doReplay = scanIn.nextLine();
-    		} while (!doReplay.equalsIgnoreCase("yes") && !doReplay.equalsIgnoreCase("y") && !doReplay.equalsIgnoreCase("no") && !doReplay.equalsIgnoreCase("n"));
+    		}
     	}
     	
     	scanIn.close();

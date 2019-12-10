@@ -43,7 +43,6 @@ public class Vertex extends HeapElt {
                 return currEdge;
             }
         }
-
         return null;
     }
 
