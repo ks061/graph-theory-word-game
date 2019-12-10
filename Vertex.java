@@ -35,11 +35,11 @@ public class Vertex extends HeapElt {
     }
 
     /**
-     * Finds an edge that connects this vertex to the inputted vertex
+     * Finds an edge that connects this vertex to the inputed vertex
      * 
      * @param otherVertex other vertex that this vertex is allegedly connected to
      * 
-     * @return the edge that connects this vertex to the inputted vertex; null if
+     * @return the edge that connects this vertex to the inputed vertex; null if
      * no such edge exists
      */
     public Edge findEdge(Vertex otherVertex){
