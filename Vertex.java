@@ -35,8 +35,7 @@ public class Vertex extends HeapElt {
     }
 
     public Edge findEdge(Vertex v){
-
-        Iterator iterator = this.adjList.iterator();
+        Iterator<Edge> iterator = this.adjList.iterator();
         Edge currEdge;
         while(iterator.hasNext()) {
             currEdge = (Edge) iterator.next();
@@ -52,7 +51,7 @@ public class Vertex extends HeapElt {
      * Prints all of the neighbors adjacent to this vertex.
      */
     public void printNeighbors() {
-        Iterator iterator = this.adjList.iterator();
+        Iterator<Edge> iterator = this.adjList.iterator();
 
         int counter = 0;
         Edge currentEdge;
@@ -97,10 +96,6 @@ public class Vertex extends HeapElt {
         return this.index;
     }
 
-    public void setPredecessor(Vertex p){
-        this.predecessor = p;
-    }
-
     public LinkedList<Edge> getAdjList(){
         return this.adjList;
     }
@@ -115,6 +110,10 @@ public class Vertex extends HeapElt {
 
     public Vertex getPredecessor(){
         return this.predecessor;
+    }
+    
+    public void setPredecessor(Vertex p){
+        this.predecessor = p;
     }
 
 }

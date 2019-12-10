@@ -4,17 +4,19 @@
 //
 
 public class HeapElt {
-    protected Comparable record;
+    @SuppressWarnings("rawtypes")
+	protected Comparable record;
     protected int handle = 0;
 
     public HeapElt() {
     }
 
-    public void setRecord(Comparable inRec) {
+    public void setRecord(@SuppressWarnings("rawtypes") Comparable inRec) {
         this.record = inRec;
     }
 
-    public Comparable getRecord() {
+    @SuppressWarnings("rawtypes")
+	public Comparable getRecord() {
         return this.record;
     }
 

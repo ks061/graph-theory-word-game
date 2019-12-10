@@ -5,15 +5,11 @@
  * @author Nick Passantino
  */
 
-import java.util.Iterator;
-import java.util.HashSet;
 
 /**
  * Represents an edge in an undirected graph.
  */
 public class Edge {
-    // Vertex that holds this edge
-    private Vertex source;
     // Vertex adjacent to the vertex holding this edge
     private Vertex adjacentVertex;
     private int weight;
@@ -21,14 +17,12 @@ public class Edge {
     /**
      * Constructor
      *
-     * @param source vertex that holds this edge
      * @param adjacentVertex vertex adjacent to the vertex holding this edge
      * @param weight weight of the edge
      */
-    public Edge(Vertex source, Vertex adjacentVertex, int weight) {
-        this.source = source;
-	this.adjacentVertex = adjacentVertex;
-	this.weight = weight;
+    public Edge(Vertex adjacentVertex, int weight) {
+        this.adjacentVertex = adjacentVertex;
+        this.weight = weight;
     }
 
     /**
@@ -37,7 +31,7 @@ public class Edge {
      * @return vertex adjacent to the vertex holding this edge
      */
     public Vertex getAdjacentVertex() {
-	return this.adjacentVertex;
+    	return this.adjacentVertex;
     }
 
     /**
@@ -46,6 +40,6 @@ public class Edge {
      * @return weight of this edge
      */
     public int getWeight() {
-	return this.weight;
+    	return this.weight;
     }
 }

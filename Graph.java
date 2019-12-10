@@ -4,7 +4,6 @@
  * @author Kartikeya Sharma
  * @author Nick Passantino
  */
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -77,8 +76,8 @@ public class Graph {
      * @param weight weight of edge
      */  
     public void addEdge(Vertex v1, Vertex v2, int weight) {
-        Edge edge1 = new Edge(v1, v2, weight);
-	Edge edge2 = new Edge(v2, v1, weight);
+        Edge edge1 = new Edge(v2, weight);
+        Edge edge2 = new Edge(v1, weight);
         this.vertices[v1.getIndex()].addEdge(edge1);
         this.vertices[v2.getIndex()].addEdge(edge2);
     }
@@ -164,7 +163,8 @@ public class Graph {
         return null;
     }
 
-    public Vertex dijkstras(Vertex vStart, Vertex vEnd){
+    @SuppressWarnings("unchecked")
+	public Vertex dijkstras(Vertex vStart, Vertex vEnd){
         Heap priorityQueue = new Heap();
 
         for(int i = 0; i < this.vertices.length; i++){

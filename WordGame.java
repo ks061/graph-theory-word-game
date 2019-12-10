@@ -7,10 +7,8 @@
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -29,8 +27,6 @@ public class WordGame {
 	String line;	
 	String wordsInLine[];
 	ArrayList<String> words = new ArrayList<String>();
-	int wordIndex = 0;
-	
 	BufferedReader br = new BufferedReader(new FileReader(filename));
 	while ((line = br.readLine()) != null) {
 	    wordsInLine = line.split(" ");
@@ -74,39 +70,41 @@ public class WordGame {
      * @exception IOException if issues with reading in dictionary words from file with inputted filename
      */
     public static void main(String[] args) throws IOException {
-	System.out.println("Welcome to WordGame!");
-	String filename = args[0];
+    	System.out.println("Welcome to WordGame!");
+    	String filename = args[0];
 
-	File file = new File(filename);
-	if (!file.exists()) {
-		System.out.println("Error: File " + filename + " could not be found.");
-		System.exit(1);
-	}
+    	File file = new File(filename);
+    	if (!file.exists()) {
+    		System.out.println("Error: File " + filename + " could not be found.");
+    		System.exit(1);
+    	}
 
-	ArrayList<String> words = readWords(filename);
-	Graph graph = new Graph(words);
+    	ArrayList<String> words = readWords(filename);
+    	Graph graph = new Graph(words);
 
-	Scanner scanIn = new Scanner(System.in);
-	String doReplay = "yes";
-	String word1, word2;
+    	Scanner scanIn = new Scanner(System.in);
+    	String doReplay = "yes";
+    	String word1, word2;
 
-	while (doReplay.equalsIgnoreCase("yes") || doReplay.equalsIgnoreCase("y")) {
-		System.out.println("Enter two five letter words (press enter after each): ");
-		word1 = scanIn.nextLine().toUpperCase();
-		word2 = scanIn.nextLine().toUpperCase();
-		// System.out.println("The neighbors of " + word + " are: ");
+    	while (doReplay.equalsIgnoreCase("yes") || doReplay.equalsIgnoreCase("y")) {
+    		System.out.println("Enter two five letter words (press enter after each): ");
+    		word1 = scanIn.nextLine().toUpperCase();
+    		word2 = scanIn.nextLine().toUpperCase();
+    		// System.out.println("The neighbors of " + word + " are: ");
 
-		if(graph.checkValidity(word1, word2)){
-			Vertex vStart = graph.getVertex(word1);
-			Vertex vEnd = graph.getVertex(word2);
+    		if (graph.checkValidity(word1, word2)){
+    			Vertex vStart = graph.getVertex(word1);
+    			Vertex vEnd = graph.getVertex(word2);
 
-			graph.printVertPath(graph.dijkstras(vStart, vEnd));
-		}
-		do {
-			System.out.println("\nEnter another word? (yes / y or n / no): ");
-			doReplay = scanIn.nextLine();
-		} while (!doReplay.equalsIgnoreCase("yes") && !doReplay.equalsIgnoreCase("y") && !doReplay.equalsIgnoreCase("no") && !doReplay.equalsIgnoreCase("n"));
-	}
-
+    			graph.printVertPath(graph.dijkstras(vStart, vEnd));
+    		}
+    		
+    		do {
+    			System.out.println("\nEnter another word? (yes / y or n / no): ");
+    			doReplay = scanIn.nextLine();
+    		} while (!doReplay.equalsIgnoreCase("yes") && !doReplay.equalsIgnoreCase("y") && !doReplay.equalsIgnoreCase("no") && !doReplay.equalsIgnoreCase("n"));
+    	}
+    	
+    	scanIn.close();
     }
 }
