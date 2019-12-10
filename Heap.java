@@ -14,11 +14,10 @@ public class Heap {
       this!
     */
     public Heap() {
-	array = new HeapElt[4];
-	heapsize = 0;
-	arraysize = 4;
+        array = new HeapElt[4];
+        heapsize = 0;
+        arraysize = 4;
     }
-
 
 
     /*
@@ -30,7 +29,7 @@ public class Heap {
     private void exchange(int pos1, int pos2) {
         // store heap element at pos 2
         HeapElt heapElt2 = array[pos2];
-        
+
         // swap elements
         array[pos2] = array[pos1];
         array[pos1] = heapElt2;
@@ -39,7 +38,6 @@ public class Heap {
         array[pos1].setHandle(pos1);
         array[pos2].setHandle(pos2);
     }
-
 
 
     /*
@@ -60,11 +58,10 @@ public class Heap {
         }
 
         // array points to the newly created array
-        array = newArray; 
+        array = newArray;
         // arraysize is set to the size of the new array
         arraysize *= 2;
     }
-
 
 
     /*
@@ -77,11 +74,11 @@ public class Heap {
     */
     @SuppressWarnings("unchecked")
     public void heapifyUp(int pos) {
-        // heapify up only if not looking at minimum element 
+        // heapify up only if not looking at minimum element
         // and if current node is less than the parent node
-        if ((pos > 1) && (array[pos].getRecord().compareTo(array[pos/2].getRecord()) < 0)) {
-            exchange(pos/2, pos);
-            heapifyUp(pos/2);
+        if ((pos > 1) && (array[pos].getRecord().compareTo(array[pos / 2].getRecord()) < 0)) {
+            exchange(pos / 2, pos);
+            heapifyUp(pos / 2);
         }
     }
 
@@ -97,15 +94,15 @@ public class Heap {
     public void heapifyDown(int pos) {
         int smallest_pos = pos;
         // set smallest_pos to the position of the left child if it is the smallest node examined thus far
-        if (2*pos <= heapsize) {
-            HeapElt leftChildHeapElt = array[2*pos];
+        if (2 * pos <= heapsize) {
+            HeapElt leftChildHeapElt = array[2 * pos];
             if (leftChildHeapElt.getRecord().compareTo(array[smallest_pos].getRecord()) < 0) {
                 smallest_pos = leftChildHeapElt.getHandle();
             }
         }
         // set smallest_pos to the position of the right child if it is the smallest node examined thus far
-	if (2*pos + 1 <= heapsize) {
-            HeapElt rightChildHeapElt = array[2*pos+1];
+        if (2 * pos + 1 <= heapsize) {
+            HeapElt rightChildHeapElt = array[2 * pos + 1];
             if (rightChildHeapElt.getRecord().compareTo(array[smallest_pos].getRecord()) < 0) {
                 smallest_pos = rightChildHeapElt.getHandle();
             }
@@ -119,19 +116,18 @@ public class Heap {
     }
 
 
-
     /*
       Insert inElt into the heap.  Before doing so, make sure that there is
       an open spot in the array for doing so.  If you need more space, call
       doubleHeap() before doing the insertion.
 
-      Running time = O(n) when doubling the size of the array; otherwise, O(lg(n)) 
+      Running time = O(n) when doubling the size of the array; otherwise, O(lg(n))
       (NOTE that there are a couple of different cases here!)
     */
     public void insert(HeapElt inElt) {
         // only double the heap if there are insufficient spaces in the array
         // to add another element (note that elements are stored starting at index 1)
-	if (heapsize + 1 >= arraysize) {
+        if (heapsize + 1 >= arraysize) {
             doubleHeap();
         }
 
@@ -139,9 +135,9 @@ public class Heap {
         heapsize++;
         array[heapsize] = inElt;
         inElt.setHandle(heapsize);
-        
+
         // sort inserted element relative to tree
-        heapifyUp(heapsize);    
+        heapifyUp(heapsize);
     }
 
 
@@ -153,18 +149,17 @@ public class Heap {
       Running time = O(lg(n))
     */
     public HeapElt removeMin() {
-	// WARNING: Will fail with empty heap!
+        // WARNING: Will fail with empty heap!
         HeapElt minElt = array[1];
-       
+
         // swap root of tree with last element in heap
         exchange(1, heapsize);
         heapsize--;
         // sort formerly last element in the heap relative to tree
         heapifyDown(1);
-        
+
         return minElt;
     }
-
 
 
     /*
@@ -172,29 +167,28 @@ public class Heap {
 
       Running time = O(1)
     */
-    public int getHeapsize() {
+    public int getHeapSize() {
 
         return this.heapsize;
-    
+
     }
 
- 
 
-   /*
-      Print out the heap for debugging purposes.  It is recommended to 
-      print both the key from the record and the handle.
+    /*
+       Print out the heap for debugging purposes.  It is recommended to
+       print both the key from the record and the handle.
 
-      Running time = O(n)
-    */
+       Running time = O(n)
+     */
     public void printHeap() {
 
         System.out.println("Started printing heap...");
-	for (int i = 1; i < this.heapsize; i++) {
+        for (int i = 1; i < this.heapsize; i++) {
             // prints handle and key of each element in the array of the minimum heap
             System.out.println("Handle: " + array[i].getHandle() + " Key: " + array[i].getRecord());
         }
         System.out.println("Finished printing heap...");
 
-     }
+    }
 
 }
