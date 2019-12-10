@@ -68,8 +68,8 @@ public class Graph {
     }
 
     /**
-     * Creates an edge with the inputted weight connecting v1 to v2 and adds it to v1.
-     * Creates an edge with the inputted weight connecting v2 to v1 and adds it to v2.
+     * Creates an edge with the inputed weight connecting v1 to v2 and adds it to v1.
+     * Creates an edge with the inputed weight connecting v2 to v1 and adds it to v2.
      *
      * @param v1 a vertex being connected to v2 via a weighted edge
      * @param v2 a vertex being connected to v1 via a weighted edge
@@ -95,6 +95,15 @@ public class Graph {
     }
 
     
+    /**
+     * Checks whether word1 and word2 exist in the graph and returns true
+     * only if both exist in the graph. A helpful message is printed if one
+     * or both words are not found.
+     * 
+     * @param word1 word that will be checked for existence in this graph
+     * @param word2 another word that will be checked for existence in this graph
+     * @return true if both words exist in this graph
+     */
     public boolean checkValidity(String word1, String word2) {
         Vertex v1 = this.getVertex(word1);
         Vertex v2 = this.getVertex(word2);
@@ -114,6 +123,14 @@ public class Graph {
     }
 
 
+    /**
+     * Prints the total of the edge weights of the shortest path to get from 
+     * word1 to word2 and prints the associated path with relevant edge weights.
+     * 
+     * @param v vertex that is being traced back from (associated with word2)
+     * @param word1 word being traveled from
+     * @param word2 word being traveled to
+     */
     public void printVertPath(Vertex v, String word1, String word2){
     	ArrayList<Vertex> vertexPath = new ArrayList<>();
         int totalCost = 0;
@@ -144,12 +161,12 @@ public class Graph {
     }
 
     /**
-     * Gets the Vertex object containing the inputted word using a
+     * Gets the Vertex object containing the inputed word using a
      * binary search algorithm.
      *
      * @param word word corresponding to a vertex
      *
-     * @return Vertex object containing the inputted word
+     * @return Vertex object containing the inputed word
      */
     public Vertex getVertex(String word) {
 	    word = word.toUpperCase();
@@ -174,49 +191,68 @@ public class Graph {
     }
 
     @SuppressWarnings("unchecked")
-	public Vertex dijkstras(Vertex vStart, Vertex vEnd){
+    /**
+     * Dijkstra's algorithm that throws vertices into the priority queue,
+     * implemented as a minimum heap, as they are reached during the process
+     * of building the minimum spanning tree.
+     * 
+     * @param startingVertex vertex that is started from
+     * @param endingVertex vertex that is to be reached via dijkstra's algorithm
+     * 
+     * @return vertex ending vertex in dijkstra's algorithm; null if ending vertex not found
+     * in dijkstra's algorithm
+     */
+	public Vertex dijkstrasAlgo(Vertex startingVertex, Vertex endingVertex){
         Heap priorityQueue = new Heap();
 
+        // initialization of each vertex in graph
         for(int i = 0; i < this.vertices.length; i++){
-            this.vertices[i].setRecord(Integer.MAX_VALUE);
-            this.vertices[i].setPredecessor(null);
-            this.vertices[i].setHandle(0);
+            this.vertices[i].setRecord(Integer.MAX_VALUE); // start by initializing all the 
+            											   // vertices as being associated
+            											   // with an edge weight (priority) 
+            											   // of infinity
+            this.vertices[i].setPredecessor(null); // because no predecessor known yet
+            this.vertices[i].setHandle(0); // to be inserted at root
         }
 
-        vStart.setRecord(0);
-        vStart.setPathWeight(0);
+        startingVertex.setRecord(0); // total edge weights leading to vertex is 0
+        startingVertex.setPathWeight(0); // edge weight connecting this vertex to predecessor (none) is 0
 
-        priorityQueue.insert(vStart);
+        priorityQueue.insert(startingVertex); // insert starting vertex into the priority queue
 
-        while(priorityQueue.getHeapSize() > 0){
-            Vertex u = (Vertex) priorityQueue.removeMin();
-            if(u.getWord().equals(vEnd.getWord())){
-                return u;
+        while (priorityQueue.getHeapSize() > 0) { // while the priority queue has vertices
+            Vertex u = (Vertex) priorityQueue.removeMin(); // examine the highest priority item
+            if (u.getWord().equals(endingVertex.getWord())) {
+                return u; // ending vertex has been reached and will be returned
             }
 
             // iterate over all adjacent vertexes via the edges of the current vertex
             Iterator<Edge> iterator = u.getAdjList().iterator();
             Edge currentEdge;
-
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 currentEdge = (Edge)iterator.next();
                 Vertex v = currentEdge.getAdjacentVertex();
 
                 // see if the vertex belongs in the minimum spanning tree
-
                 int comp = (int) u.getRecord() + currentEdge.getWeight();
-                if (v.getRecord().compareTo(comp) > 0 ){
-                    v.setRecord((int) u.getRecord() + currentEdge.getWeight());
-                    v.setPredecessor(u);
+                if (v.getRecord().compareTo(comp) > 0 ) { // if the sum of the edges of the best currently known
+                										  // path to v from the start is greater than the best
+                										  // path going from the start to u and then this
+                										  // additional edge that is being explored
+                    v.setRecord((int) u.getRecord() + currentEdge.getWeight()); // replace the best currently
+                    															// known path length
+                    v.setPredecessor(u); // link u to be v's predecessor in this shorter path
 
-                    if(v.getHandle() == 0) {
-                        priorityQueue.insert(v);
+                    if (v.getHandle() == 0) {
+                        priorityQueue.insert(v); // insert if not already in priority queue
                     } else {
-                        priorityQueue.heapifyUp(v.getHandle());
+                        priorityQueue.heapifyUp(v.getHandle()); // heapifyup if already in priority queue
+                        										// because priority has now presumably been lowered
                     }
                 }
             }
         }
+        
         return null;
     }
 }

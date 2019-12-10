@@ -19,7 +19,6 @@ public class Heap {
         arraysize = 4;
     }
 
-
     /*
       Exchanges that values at positions pos1 and pos2 in the heap array.
       Handles must be exchanged correctly as well.

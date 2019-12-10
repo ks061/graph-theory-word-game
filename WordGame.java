@@ -24,46 +24,34 @@ public class WordGame {
      * @return list of imported dictionary words
      */
     private static ArrayList<String> readWords(String filename) throws IOException {
-	String line;	
-	String wordsInLine[];
-	ArrayList<String> words = new ArrayList<String>();
-	BufferedReader br = new BufferedReader(new FileReader(filename));
-	while ((line = br.readLine()) != null) {
-	    wordsInLine = line.split(" ");
-	    for(int i = 0; i < wordsInLine.length; i++) {
-		if (wordsInLine[i].equals("")) continue;
-		words.add(wordsInLine[i]);
-	    }
-	}
-	br.close();
-
-	return words;
-    }
-
-	public static void printPath(ArrayList<Vertex> vlist){
-		int wordsPerLine = 5;
-		int counter = 0;
-		for(int i = 0; i < vlist.size(); i++){
-			if (counter == wordsPerLine) {
-				System.out.println();
-				counter = 0;
-			} else {
-				counter += 1;
-			}
-			System.out.print(vlist.get(i).getWord() + " (" + vlist.get(i).getPathWeight() + ")  ");
+    	String line;	
+		String wordsInLine[];
+		ArrayList<String> words = new ArrayList<String>();
+		
+		BufferedReader br = new BufferedReader(new FileReader(filename));
+		while ((line = br.readLine()) != null) {
+	    	wordsInLine = line.split(" ");
+	    	for(int i = 0; i < wordsInLine.length; i++) {
+	    		if (wordsInLine[i].equals("")) continue;
+	    		words.add(wordsInLine[i]);
+	    	}
 		}
-	}
+		br.close();
+
+		return words;
+    }
 
     /**
      * Runs the WordGame
+     * 
      * The game takes in a filename from its first command line argument.
      * It checks if the file exists; if it does not, an error message is printed,
      * and the program is exited. The program then imports dictionary words from a file.
-     * It prompts the user to enter a five letter word. After, the neighboring words in the
-     * graphs and corresponding edge weights to connect over to the vertices containing those
-     * neighboring words is printed. The user is then asked if they would like to enter
+     * It prompts the user to enter two five letter words. After, the shortest path
+     * from one word to another is printed along with the total of the edge weights along
+     * that path. The user is then asked if they would like to enter
      * in another word, at which point y and yes are accepted as yes and n and no are accepted
-     * as no. If any other input is entered, the user is reprompted whether they would like
+     * as no. If any other input is entered, the user is re-prompted whether they would like
      * to enter in another word.
      *
      * @param args command line arguments
@@ -99,10 +87,10 @@ public class WordGame {
     		word2 = scanIn.nextLine().toUpperCase();
 
     		if (graph.checkValidity(word1, word2)){
-    			Vertex vStart = graph.getVertex(word1);
-    			Vertex vEnd = graph.getVertex(word2);
+    			Vertex startingVertex = graph.getVertex(word1);
+    			Vertex endingVertex = graph.getVertex(word2);
 
-    			graph.printVertPath(graph.dijkstras(vStart, vEnd), word1, word2);
+    			graph.printVertPath(graph.dijkstrasAlgo(startingVertex, endingVertex), word1, word2);
     		}
     		
     		System.out.print("Do you want to try another word? Enter yes or no: ");

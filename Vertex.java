@@ -34,12 +34,20 @@ public class Vertex extends HeapElt {
         this.record = Integer.MAX_VALUE;
     }
 
-    public Edge findEdge(Vertex v){
+    /**
+     * Finds an edge that connects this vertex to the inputted vertex
+     * 
+     * @param otherVertex other vertex that this vertex is allegedly connected to
+     * 
+     * @return the edge that connects this vertex to the inputted vertex; null if
+     * no such edge exists
+     */
+    public Edge findEdge(Vertex otherVertex){
         Iterator<Edge> iterator = this.adjList.iterator();
         Edge currEdge;
         while(iterator.hasNext()) {
             currEdge = (Edge) iterator.next();
-            if(currEdge.getAdjacentVertex().getWord().equals(v.getWord())){
+            if(currEdge.getAdjacentVertex().getWord().equals(otherVertex.getWord())){
                 return currEdge;
             }
         }
@@ -95,22 +103,51 @@ public class Vertex extends HeapElt {
         return this.index;
     }
 
+    /**
+     * Returns the list of edges that this vertex is connected to
+     * 
+     * @return list of edges that this vertex is connected to
+     */
     public LinkedList<Edge> getAdjList(){
         return this.adjList;
     }
 
+    /**
+     * Gets the weight value (of the edge connecting this vertex to its predecessor) 
+     * held by this vertex in the context of dijkstra's algorithm
+     * 
+     * @return weight value held by this vertex in the context of dijkstra's
+     * algorithm
+     */
     public int getPathWeight(){
         return this.pathWeight;
     }
 
-    public void setPathWeight(int w) {
-        this.pathWeight = w;
+    /**
+     * Sets the weight value (of the edge connecting this vertex to its predecessor) 
+     * held by this vertex in the context of dijkstra's algorithm
+     * 
+     * @param pathWeight the weight value held by this vertex in the context of
+     * dijkstra's algorithm
+     */
+    public void setPathWeight(int pathWeight) {
+        this.pathWeight = pathWeight;
     }
 
+    /**
+     * Sets the preceding vertex in the context of dijkstra's algorithm
+     * 
+     * @return the preceding vertex in the context of dijkstra's algorithm
+     */
     public Vertex getPredecessor(){
         return this.predecessor;
     }
     
+    /**
+     * Sets the preceding vertex in the context of dijkstra's algorithm
+     * 
+     * @param p the preceding vertex in the context of dijkstra's algorithm
+     */
     public void setPredecessor(Vertex p){
         this.predecessor = p;
     }
